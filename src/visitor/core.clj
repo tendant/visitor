@@ -9,20 +9,27 @@
   (println "Hello, World!"))
 
 (defn branch? [node]
+  (println "branch?:" node)
   (map? node))
 
 (defn children [node]
+  (println "children:" node)
   (:children node))
 
-(defn make-node [node children]
-  (assoc node :children children))
+(defn add-parent-to-children
+  [parent children]
+  (map #(assoc % :v/parent parent) children))
 
-(def test1 {:children []})
+(defn make-node [node children]
+  (println "make-node:" node " with children:" children)
+  (assoc node :children (add-parent-to-children node children)))
+
+(def test1 {:name "first" :children [{:name "child1"} {:name "child2"}]})
 
 (zv/defvisitor visited :pre [n s]
   (println :pre "node:" n " state:" s)
   {:node n
-   :state (assoc s :change "visited")})
+   :state (assoc s :parent n)})
 
 (defn test-visit
   [root]
