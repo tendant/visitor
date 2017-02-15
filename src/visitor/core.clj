@@ -24,7 +24,9 @@
   (println "make-node:" node " with children:" children)
   (assoc node :children (add-parent-to-children node children)))
 
-(def test1 {:name "first" :children [{:name "child1"} {:name "child2"}]})
+(def test1 {:name "first" :children [{:name "child1"
+                                      :children {:name "child1's children" :children [{:name "child1's children 1"} {:name "child1's chidlren 2"}]}}
+                                     {:name "child2"}]})
 
 (zv/defvisitor visited :pre [n s]
   (println :pre "node:" n " state:" s)
